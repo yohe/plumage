@@ -24,7 +24,7 @@ namespace plumage {
 
         virtual ~RepositoryBase();
 
-        PluginInterface* registerPlugin(PluginInterface* plugin);
+        PluginInterface* registerPlugin(PluginInterface* plugin, void* pluginHandle);
 
         void unregistPlugin(PluginInterface* pif);
 

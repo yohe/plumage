@@ -1,10 +1,18 @@
 
 #include <dlfcn.h>
+#include <algorithm>
+
 #include "plumage/plugin_manager.hpp"
 #include "plumage/plugin_repository.hpp"
 #include "plumage/plugin_interface.hpp"
+#include "plumage/plumage_util.hpp"
 
 using namespace plumage;
+
+PluginManager::~PluginManager() {
+    std::for_each(repositoryMap_.begin(), repositoryMap_.end(), MapElementDeleter());
+    std::for_each(repositoryMapDebug_.begin(), repositoryMapDebug_.end(), MapElementDeleter());
+}
 
 PluginRepository* PluginManager::getPluginRepository(const std::string& pluginName,
                                                      int interfaceVersion,
@@ -60,7 +68,7 @@ bool PluginManager::loadPlugin(const std::string& pluginPath, const std::string&
     }
 
     RepositoryKey key(pif->getPluginName(), pif->getInterfaceVersion());
-    repos->registerPlugin(pif);
+    repos->registerPlugin(pif, pluginLibrary);
     if(!pif->isDebug()) {
         repositoryMap_.insert(std::pair<RepositoryKey, PluginRepository*>(key, repos));
     } else {

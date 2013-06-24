@@ -2,9 +2,10 @@
 #ifndef PLUMAGE_PLUGIN_INFORMATION_H
 #define PLUMAGE_PLUGIN_INFORMATION_H
 
-#include "plumage/plugin_interface.hpp"
 
 namespace plumage {
+
+    class PluginInterface;
 
     class PluginStatus {
     public:
@@ -17,27 +18,22 @@ namespace plumage {
 
     class PluginInformation {
     public:
-        PluginInformation(PluginInterface* pif, PluginStatus::Status status) :
-            _plugin(pif), _status(status) {}
+        PluginInformation(PluginInterface* pif, PluginStatus::Status status, void* pluginHandle);
 
-        virtual ~PluginInformation() {
-            PluginDeleter* deleter = _plugin->getDeleter();
-            (*deleter)(_plugin);
-            delete deleter;
-        }
+        virtual ~PluginInformation();
 
         PluginInterface* getPlugin() const {
-            return _plugin;
+            return plugin_;
         }
 
         PluginStatus::Status getPluginStatus() const {
-            return _status;
+            return status_;
         }
-
+        
     private:
-        PluginInterface* _plugin;
-        PluginStatus::Status _status;
-
+        PluginInterface* plugin_;
+        PluginStatus::Status status_;
+        void* pluginHandle_;
     };
 
 }

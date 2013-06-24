@@ -11,6 +11,7 @@ namespace plumage {
     class PluginInterface;
 
     class PluginManager {
+
         typedef PluginInterface* (*PluginAllocator)();
         class RepositoryKey {
         public:
@@ -46,7 +47,7 @@ namespace plumage {
     public:
         PluginManager(std::string version = "0.1") : version_(version) {}
 
-        ~PluginManager() {}
+        ~PluginManager();
 
         bool loadPlugin(const std::string& pluginPath, const std::string& loadMethod);
         bool releasePlugin(std::string pluginName, int interfaceVersion, int pluginVersion);

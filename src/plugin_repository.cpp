@@ -1,14 +1,19 @@
 
+#include <algorithm>
+
 #include "plumage/plugin_repository.hpp"
+#include "plumage/plugin_interface.hpp"
+#include "plumage/plumage_util.hpp"
 
 using namespace plumage;
 
 RepositoryBase::~RepositoryBase() {
+    std::for_each(pluginMap_.begin(), pluginMap_.end(), MapElementDeleter());
 }
 
-PluginInterface* RepositoryBase::registerPlugin(PluginInterface* plugin) {
+PluginInterface* RepositoryBase::registerPlugin(PluginInterface* plugin, void* pluginHandle) {
     PluginInterface* pif = plugin;
-    PluginInformation* pinfo = new PluginInformation(pif, PluginStatus::REGISTED);
+    PluginInformation* pinfo = new PluginInformation(pif, PluginStatus::REGISTED, pluginHandle);
     latestPluginVersion_ = std::max(latestPluginVersion_, pif->getPluginVersion());
     pluginMap_[pif->getPluginVersion()] = pinfo;
     std::cout << "registered plugin." << std::endl;

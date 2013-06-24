@@ -14,7 +14,9 @@ public:
     SamplePlugin(std::string name) : plumage::PluginInterface(name, new SamplePluginDeleter())
     {}
 
-    virtual ~SamplePlugin() {}
+    virtual ~SamplePlugin() {
+        std::cout << "SamplePlugin destruct." << std::endl;
+    }
 
     virtual int getInterfaceVersion() const {
         return 1;

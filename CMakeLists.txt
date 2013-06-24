@@ -15,12 +15,14 @@ add_library(plumage SHARED
     src/plugin_manager.cpp
     src/plugin_repository.cpp
     src/plugin_interface.cpp
+    src/plugin_information.cpp
     )
 
 add_library(plumage_st STATIC
     src/plugin_manager.cpp
     src/plugin_repository.cpp
     src/plugin_interface.cpp
+    src/plugin_information.cpp
     )
 
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
