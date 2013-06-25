@@ -5,10 +5,12 @@ PROJECT(plumage)
 IF(UNIX)
     include_directories(/usr/include ./)
     link_directories(/usr/lib)
+    add_definitions(-DUNIX)
 ENDIF(UNIX)
 IF(APPLE)
     include_directories(/opt/local/include /usr/include ./)
     link_directories(/opt/local/lib /usr/lib)
+    add_definitions(-DMAC_OSX)
 ENDIF(APPLE)
 
 ADD_LIBRARY(sample_plugin SHARED
