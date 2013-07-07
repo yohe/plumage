@@ -10,6 +10,7 @@ namespace plumage {
             delete element.second;
         };
     };
+    
 }
 
 #endif 

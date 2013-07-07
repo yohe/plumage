@@ -16,6 +16,7 @@ add_library(plumage SHARED
     src/plugin_repository.cpp
     src/plugin_interface.cpp
     src/plugin_information.cpp
+    src/plugin_requirement.cpp
     )
 
 add_library(plumage_st STATIC
@@ -23,6 +24,7 @@ add_library(plumage_st STATIC
     src/plugin_repository.cpp
     src/plugin_interface.cpp
     src/plugin_information.cpp
+    src/plugin_requirement.cpp
     )
 
 set(CMAKE_CXX_FLAGS_DEBUG "-g")

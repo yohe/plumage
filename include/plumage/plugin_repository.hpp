@@ -12,17 +12,17 @@ namespace plumage {
 
     class PluginInterface;
 
-    class RepositoryBase {
+    class PluginRepository {
     protected:
     public:
 
-        RepositoryBase(const std::string& repositoryName, int interfaceVersion) : 
+        PluginRepository(const std::string& repositoryName, int interfaceVersion) : 
             repositoryName_(repositoryName),
             interfaceVersion_(interfaceVersion),
-            latestPluginVersion_(0)
+            activatedPluginVersion_(0)
         {}
 
-        virtual ~RepositoryBase();
+        virtual ~PluginRepository();
 
         PluginInterface* registerPlugin(PluginInterface* plugin, void* pluginHandle);
 
@@ -32,35 +32,23 @@ namespace plumage {
             return repositoryName_;
         }
 
+        PluginInterface* getActivatedPlugin() const;
+        PluginInterface* getPlugin(int pluginVersion) const;
+
+        bool isActivated(int pluginVersion) const;
+        int getActivatedVersion() const;
+        bool activate(int pluginVersion);
+        bool deactivate();
+
+        std::map<int, PluginInterface*> getPluginList() const;
+
     protected:
         typedef std::map<int, PluginInformation*> PluginMap;
         PluginMap pluginMap_;
         std::string repositoryName_;
         int interfaceVersion_;
-        int latestPluginVersion_;
+        int activatedPluginVersion_;
 
-    };
-
-    class PluginRepository : public RepositoryBase {
-    public:
-        PluginRepository(const std::string& repositoryName, int interfaceVersion);
-        virtual ~PluginRepository();
-
-        template <class T>
-        T* getPlugin(int pluginVersion = -1) const {
-            if(pluginVersion == -1) {
-                pluginVersion = latestPluginVersion_;
-            }
-            PluginMap::const_iterator ite = pluginMap_.find(pluginVersion);
-            if(ite == pluginMap_.end()) {
-                return NULL;
-            }
-            PluginInformation* pinfo = ite->second;
-            PluginInterface* pif = pinfo->getPlugin();
-            return dynamic_cast<T*>(pif);
-        }
-
-    protected:
     };
 
 }

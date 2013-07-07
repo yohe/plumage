@@ -62,6 +62,11 @@ bool PluginManager::loadPlugin(const std::string& pluginPath, const std::string&
         return false;
     }
 
+    if(validateRequirement(pif->getRequirement()) == false) {
+        //throw exception;
+        return false;
+    }
+
     PluginRepository* repos = getPluginRepository(pif->getPluginName(), pif->getInterfaceVersion(), pif->isDebug());
     if( repos == nullptr) {
         repos = new PluginRepository(pif->getPluginName(), pif->getInterfaceVersion());
@@ -70,11 +75,16 @@ bool PluginManager::loadPlugin(const std::string& pluginPath, const std::string&
     RepositoryKey key(pif->getPluginName(), pif->getInterfaceVersion());
     repos->registerPlugin(pif, pluginLibrary);
     if(!pif->isDebug()) {
+        std::cout << "ReleaseMode" << std::endl;
         repositoryMap_.insert(std::pair<RepositoryKey, PluginRepository*>(key, repos));
     } else {
+        std::cout << "DebugMode" << std::endl;
         repositoryMapDebug_.insert(std::pair<RepositoryKey, PluginRepository*>(key, repos));
     }
 
     return true;
 }
 
+bool PluginManager::validateRequirement(const PluginRequirement& requirement) {
+    return true;
+}

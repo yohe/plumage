@@ -9,6 +9,7 @@ namespace plumage {
 
     class PluginRepository;
     class PluginInterface;
+    class PluginRequirement;
 
     class PluginManager {
 
@@ -58,6 +59,8 @@ namespace plumage {
 
         virtual bool setup(const std::string& configFile); 
         //virtual bool checkCompatibility(PluginInterface* pif);
+
+        bool validateRequirement(const PluginRequirement& requirement);
 
     private:
         typedef std::map<RepositoryKey, PluginRepository*> PluginRepositoryMap;

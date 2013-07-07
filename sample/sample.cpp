@@ -13,8 +13,20 @@ int main(int argc, char const* argv[])
 #endif
 
     plumage::PluginRepository* repos = manager.getPluginRepository("SamplePlugin", 1, true);
-    SamplePlugin* pif = repos->getPlugin<SamplePlugin>();
+    if(repos == nullptr) {
+        return 0;
+    }
+    repos->activate(1);
+    plumage::PluginInterface* pif = repos->getActivatedPlugin();
+    if(pif == nullptr) {
+        std::cout << "A-----------------------" << std::endl;
+        return 0;
+    }
+    std::cout << "pif = " << pif << std::endl;
     pif->start();
+    std::cout << "-----------------------" << std::endl;
     pif->stop();
+
+    pif->call("testMethod");
     return 0;
 }

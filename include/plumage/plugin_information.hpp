@@ -26,10 +26,16 @@ namespace plumage {
             return plugin_;
         }
 
-        PluginStatus::Status getPluginStatus() const {
+        PluginStatus::Status getStatus() const {
             return status_;
         }
-        
+
+        void setStatus(PluginStatus::Status status) {
+            if(status_ < status) {
+                status_ = status;
+            }
+        }
+
     private:
         PluginInterface* plugin_;
         PluginStatus::Status status_;

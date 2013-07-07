@@ -16,6 +16,14 @@ bool PluginInterface::stop() {
     return ret;
 }
 
+void* PluginInterface::call(const std::string& methodName, void* paramter)  throw (std::exception) {
+    if(isCallable(methodName) == false) {
+        return nullptr;
+        // throw exception;
+    }
+    return doCall(methodName, paramter);
+}
+
 PluginDeleter* PluginInterface::getDeleter() const {
     return deleter_;
 }

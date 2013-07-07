@@ -26,7 +26,7 @@ IF(CPPMODE STREQUAL CXX03)
     add_definitions(-DCXX03)
     set_target_properties(sample_plugin plumage_sample PROPERTIES COMPILE_FLAGS "-Wall -I ../include")
 ELSE()
-    set_target_properties(sample_plugin plumage_sample PROPERTIES COMPILE_FLAGS "-Wall -I ../include")
+    set_target_properties(sample_plugin plumage_sample PROPERTIES COMPILE_FLAGS "-Wall -I ../include -std=c++11")
 ENDIF()
 
 set_target_properties(sample_plugin PROPERTIES LINK_FLAGS "-L ../lib -lplumage")
