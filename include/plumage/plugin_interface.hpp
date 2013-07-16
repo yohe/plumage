@@ -12,21 +12,49 @@ namespace plumage {
 
     class PluginInterface;
 
-    class PluginDeleter {
+    class DeleterBase {
     public:
-        virtual ~PluginDeleter() {}
-        virtual void operator()(PluginInterface* p) const = 0;
+        virtual ~DeleterBase() {}
+        virtual void operator()(void* p) const = 0;
+    };
+
+    template <class T>
+    class PluginDeleter : public DeleterBase {
+    public:
+        virtual void operator()(void* p) const {
+            delete static_cast<T*>(p);
+        }
+    };
+
+    class PluginHolder {
+    public:
+        template<class T>
+        PluginHolder(T* plugin) : plugin_(plugin){
+            deleter_ = new PluginDeleter<T>();
+        }
+
+        ~PluginHolder() {
+            (*deleter_)(plugin_);
+            delete deleter_;
+        }
+
+        PluginInterface* get() const {
+            return plugin_;
+        }
+    private:
+        PluginInterface* plugin_;
+        DeleterBase* deleter_;
     };
 
     class PluginManager;
 
     class PluginInterface {
     public:
-        template <class Deleter>
-        PluginInterface(std::string name, Deleter* deleter) : pluginName_(name){
-            deleter_ = deleter;
+        PluginInterface(std::string name) : pluginName_(name){
         }
-        virtual ~PluginInterface();
+
+        virtual ~PluginInterface() {
+        }
 
         virtual int getInterfaceVersion() const = 0;
         const PluginRequirement& getRequirement() {
@@ -43,8 +71,6 @@ namespace plumage {
         bool stop();
         void* call(const std::string& methodName, void* paramter = nullptr) throw(std::exception);
 
-        PluginDeleter* getDeleter() const;
-
     private:
         friend class PluginManager;
 
@@ -54,7 +80,6 @@ namespace plumage {
 
     protected:
         std::string pluginName_;
-        PluginDeleter* deleter_;
         PluginRequirement requirement_;
     };
 

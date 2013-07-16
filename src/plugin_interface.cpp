@@ -3,9 +3,6 @@
 
 using namespace plumage;
 
-PluginInterface::~PluginInterface() {
-}
-
 bool PluginInterface::start() {
     bool ret = doStart();
     return ret;
@@ -22,9 +19,5 @@ void* PluginInterface::call(const std::string& methodName, void* paramter)  thro
         // throw exception;
     }
     return doCall(methodName, paramter);
-}
-
-PluginDeleter* PluginInterface::getDeleter() const {
-    return deleter_;
 }
 

@@ -5,17 +5,15 @@
 
 using namespace plumage;
 
-PluginInformation::PluginInformation(PluginInterface* pif, PluginStatus::Status status, void* pluginHandle) :
-    plugin_(pif),
+PluginInformation::PluginInformation(PluginHolder* holder, PluginStatus::Status status, void* pluginHandle) :
+    holder_(holder),
     status_(status),
     pluginHandle_(pluginHandle)
 {
 }
 
 PluginInformation::~PluginInformation() {
-    PluginDeleter* deleter = plugin_->getDeleter();
-    (*deleter)(plugin_);
-    delete deleter;
+    delete holder_;
     dlclose(pluginHandle_);
 }
 

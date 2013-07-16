@@ -4,16 +4,18 @@
 
 #include <string>
 #include <map>
+#include <stdexcept>
 
 namespace plumage {
 
     class PluginRepository;
     class PluginInterface;
+    class PluginHolder;
     class PluginRequirement;
 
     class PluginManager {
 
-        typedef PluginInterface* (*PluginAllocator)();
+        typedef PluginHolder* (*PluginAllocator)();
         class RepositoryKey {
         public:
             RepositoryKey(std::string pluginName, int interfaceVersion) {
@@ -50,7 +52,7 @@ namespace plumage {
 
         ~PluginManager();
 
-        bool loadPlugin(const std::string& pluginPath, const std::string& loadMethod);
+        void loadPlugin(const std::string& pluginPath, const std::string& loadMethod) throw (std::runtime_error);
         bool releasePlugin(std::string pluginName, int interfaceVersion, int pluginVersion);
 
         PluginRepository* getPluginRepository(const std::string& pluginName,
@@ -60,7 +62,7 @@ namespace plumage {
         virtual bool setup(const std::string& configFile); 
         //virtual bool checkCompatibility(PluginInterface* pif);
 
-        bool validateRequirement(const PluginRequirement& requirement);
+        void validateRequirement(const PluginRequirement& requirement) throw (std::runtime_error);
 
     private:
         typedef std::map<RepositoryKey, PluginRepository*> PluginRepositoryMap;

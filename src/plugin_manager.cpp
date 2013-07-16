@@ -36,14 +36,12 @@ bool PluginManager::setup(const std::string& configFile) {
     return true;
 }
 
-bool PluginManager::loadPlugin(const std::string& pluginPath, const std::string& loadMethod) {
+void PluginManager::loadPlugin(const std::string& pluginPath, const std::string& loadMethod) throw (std::runtime_error) {
 
     std::cout << "Loading.. : " << pluginPath << " --- " << std::flush;
     void* pluginLibrary = dlopen(pluginPath.c_str(), RTLD_LAZY);
     if(!pluginLibrary) {
-        // throw Exception;
-        std::cout << "NG" << std::endl;
-        return false;
+        throw std::runtime_error("library load error: " + pluginPath);
     }
     std::cout << "OK" << std::endl;
 
@@ -51,20 +49,22 @@ bool PluginManager::loadPlugin(const std::string& pluginPath, const std::string&
                                                           loadMethod.c_str());
 
     if(allocator == nullptr) {
-        std::cout << "NG" << std::endl;
-        return false;
+        throw std::runtime_error("method symbol error: " + loadMethod);
     }
 
-    PluginInterface* pif = allocator();
+    PluginHolder* holder = allocator();
+    std::cout << "holder: " << holder << std::endl;
+    PluginInterface* pif = holder->get();
+    std::cout << "pif: " << pif << std::endl;
 
     if(pif == nullptr) {
-        // throw Exception;
-        return false;
+        throw std::runtime_error("allocate error: " + loadMethod);
     }
 
-    if(validateRequirement(pif->getRequirement()) == false) {
-        //throw exception;
-        return false;
+    try {
+        validateRequirement(pif->getRequirement());
+    } catch (const std::runtime_error& e) {
+        throw e;
     }
 
     PluginRepository* repos = getPluginRepository(pif->getPluginName(), pif->getInterfaceVersion(), pif->isDebug());
@@ -73,18 +73,14 @@ bool PluginManager::loadPlugin(const std::string& pluginPath, const std::string&
     }
 
     RepositoryKey key(pif->getPluginName(), pif->getInterfaceVersion());
-    repos->registerPlugin(pif, pluginLibrary);
+    repos->registerPlugin(holder, pluginLibrary);
     if(!pif->isDebug()) {
-        std::cout << "ReleaseMode" << std::endl;
         repositoryMap_.insert(std::pair<RepositoryKey, PluginRepository*>(key, repos));
     } else {
-        std::cout << "DebugMode" << std::endl;
         repositoryMapDebug_.insert(std::pair<RepositoryKey, PluginRepository*>(key, repos));
     }
-
-    return true;
 }
 
-bool PluginManager::validateRequirement(const PluginRequirement& requirement) {
-    return true;
+void PluginManager::validateRequirement(const PluginRequirement& requirement) throw (std::runtime_error) {
 }
+

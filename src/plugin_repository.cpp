@@ -11,9 +11,9 @@ PluginRepository::~PluginRepository() {
     std::for_each(pluginMap_.begin(), pluginMap_.end(), MapElementDeleter());
 }
 
-PluginInterface* PluginRepository::registerPlugin(PluginInterface* plugin, void* pluginHandle) {
-    PluginInterface* pif = plugin;
-    PluginInformation* pinfo = new PluginInformation(pif, PluginStatus::REGISTED, pluginHandle);
+PluginInterface* PluginRepository::registerPlugin(PluginHolder* holder, void* pluginHandle) {
+    PluginInterface* pif = holder->get();;
+    PluginInformation* pinfo = new PluginInformation(holder, PluginStatus::REGISTED, pluginHandle);
     pluginMap_[pif->getPluginVersion()] = pinfo;
     std::cout << "registered plugin." << std::endl;
     return pif;
@@ -22,7 +22,7 @@ void PluginRepository::unregistPlugin(PluginInterface* pif) {
     PluginMap::iterator ite = pluginMap_.begin();
     PluginMap::iterator end = pluginMap_.end();
     for(; ite != end; ++ite) {
-        if(ite->second->getPlugin() == pif) {
+        if(ite->second->getHolder()->get() == pif) {
             if(ite->second->getStatus() == PluginStatus::REGISTED) {
                 delete ite->second;
                 pluginMap_.erase(ite->first);
@@ -49,7 +49,7 @@ PluginInterface* PluginRepository::getActivatedPlugin() const {
         return NULL;
     }
     PluginInformation* pinfo = ite->second;
-    PluginInterface* pif = pinfo->getPlugin();
+    PluginInterface* pif = pinfo->getHolder()->get();
     return (pif);
 }
 
@@ -59,7 +59,7 @@ PluginInterface* PluginRepository::getPlugin(int pluginVersion) const {
         return NULL;
     }
     PluginInformation* pinfo = ite->second;
-    PluginInterface* pif = pinfo->getPlugin();
+    PluginInterface* pif = pinfo->getHolder()->get();
     return (pif);
 }
 

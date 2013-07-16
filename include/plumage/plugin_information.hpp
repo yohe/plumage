@@ -5,7 +5,7 @@
 
 namespace plumage {
 
-    class PluginInterface;
+    class PluginHolder;
 
     class PluginStatus {
     public:
@@ -18,12 +18,12 @@ namespace plumage {
 
     class PluginInformation {
     public:
-        PluginInformation(PluginInterface* pif, PluginStatus::Status status, void* pluginHandle);
+        PluginInformation(PluginHolder* pif, PluginStatus::Status status, void* pluginHandle);
 
         virtual ~PluginInformation();
 
-        PluginInterface* getPlugin() const {
-            return plugin_;
+        PluginHolder* getHolder() const {
+            return holder_;
         }
 
         PluginStatus::Status getStatus() const {
@@ -37,7 +37,7 @@ namespace plumage {
         }
 
     private:
-        PluginInterface* plugin_;
+        PluginHolder* holder_;
         PluginStatus::Status status_;
         void* pluginHandle_;
     };

@@ -5,16 +5,9 @@
 #include <iostream>
 #include "plumage/plugin_interface.hpp"
 
-class SamplePluginDeleter : public plumage::PluginDeleter {
-public:
-    virtual void operator()(plumage::PluginInterface* p) const {
-        delete p;
-    }
-};
-
 class SamplePlugin : public plumage::PluginInterface {
 public:
-    SamplePlugin(std::string name) : plumage::PluginInterface(name, new SamplePluginDeleter())
+    SamplePlugin(std::string name) : plumage::PluginInterface(name)
     {}
 
     virtual ~SamplePlugin() {

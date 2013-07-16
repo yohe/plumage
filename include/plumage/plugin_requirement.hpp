@@ -4,6 +4,7 @@
 
 #include <list>
 #include <string>
+#include <stdexcept>
 
 namespace plumage {
 
@@ -29,7 +30,7 @@ namespace plumage {
         PluginRequirement();
         ~PluginRequirement();
 
-        void addRequirement(const std::string& pluginName, int interfaceVersion);
+        void addRequirement(const std::string& pluginName, int interfaceVersion) throw (std::logic_error);
         const std::list<PluginRequirementInfo>& getRequirementList() const;
 
     private:
