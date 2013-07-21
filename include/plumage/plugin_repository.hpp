@@ -16,10 +16,14 @@ namespace plumage {
     protected:
     public:
 
+        enum DefinedValue : int {
+            NO_ACTIVATE = 0 
+        };
+
         PluginRepository(const std::string& repositoryName, int interfaceVersion) : 
             repositoryName_(repositoryName),
             interfaceVersion_(interfaceVersion),
-            activatedPluginVersion_(0)
+            activatedPluginVersion_(NO_ACTIVATE)
         {}
 
         virtual ~PluginRepository();
@@ -36,7 +40,9 @@ namespace plumage {
         PluginInterface* getPlugin(int pluginVersion) const;
 
         bool isActivated(int pluginVersion) const;
-        int getActivatedVersion() const;
+        int getActivatedVersion() const {
+            return activatedPluginVersion_;
+        }
         bool activate(int pluginVersion);
         bool deactivate();
 

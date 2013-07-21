@@ -7,8 +7,9 @@
 
 class SamplePlugin : public plumage::PluginInterface {
 public:
-    SamplePlugin(std::string name) : plumage::PluginInterface(name)
-    {}
+    SamplePlugin(std::string name) : plumage::PluginInterface(name) {
+        requirement_.addRequirement("HogePlugin", 1);
+    }
 
     virtual ~SamplePlugin() {
         std::cout << "SamplePlugin destruct." << std::endl;

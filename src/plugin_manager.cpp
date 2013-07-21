@@ -1,11 +1,14 @@
 
 #include <dlfcn.h>
 #include <algorithm>
+#include <sstream>
 
 #include "plumage/plugin_manager.hpp"
 #include "plumage/plugin_repository.hpp"
 #include "plumage/plugin_interface.hpp"
 #include "plumage/plumage_util.hpp"
+#include "plumage/plugin_requirement.hpp"
+#include "plumage/plumage_config.hpp"
 
 using namespace plumage;
 
@@ -58,12 +61,14 @@ void PluginManager::loadPlugin(const std::string& pluginPath, const std::string&
     std::cout << "pif: " << pif << std::endl;
 
     if(pif == nullptr) {
+        dlclose(pluginLibrary);
         throw std::runtime_error("allocate error: " + loadMethod);
     }
 
     try {
         validateRequirement(pif->getRequirement());
     } catch (const std::runtime_error& e) {
+        dlclose(pluginLibrary);
         throw e;
     }
 
@@ -82,5 +87,18 @@ void PluginManager::loadPlugin(const std::string& pluginPath, const std::string&
 }
 
 void PluginManager::validateRequirement(const PluginRequirement& requirement) throw (std::runtime_error) {
+    for(const PluginRequirementInfo& req: requirement.getRequirementList()) {
+        PluginRepository* repos = getPluginRepository(req.pluginName_, req.version_);
+        if(repos == nullptr) {
+            std::stringstream ss;
+            ss << "Requirement error : " << req.pluginName_ << " of the interface version \"" << req.version_ << "\" is not registerd.";
+            throw std::runtime_error(ss.str().c_str());
+        }
+        if(PluginRepository::NO_ACTIVATE == repos->getActivatedVersion()) {
+            std::stringstream ss;
+            ss << "Requirement error : " << req.pluginName_ << " of the interface version \"" << req.version_ << "\" is not activated.";
+            throw std::runtime_error(ss.str().c_str());
+        }
+    }
 }
 

@@ -6,6 +6,7 @@
 #include <vector>
 #include <exception>
 
+#include "plumage/plumage_config.hpp"
 #include "plumage/plugin_requirement.hpp"
 
 namespace plumage {
@@ -46,8 +47,6 @@ namespace plumage {
         DeleterBase* deleter_;
     };
 
-    class PluginManager;
-
     class PluginInterface {
     public:
         PluginInterface(std::string name) : pluginName_(name){
@@ -56,6 +55,9 @@ namespace plumage {
         virtual ~PluginInterface() {
         }
 
+        const char* getPlumageVersion() const {
+            return PLUMAGE_VERSION;
+        }
         virtual int getInterfaceVersion() const = 0;
         const PluginRequirement& getRequirement() {
             return requirement_;
@@ -72,7 +74,6 @@ namespace plumage {
         void* call(const std::string& methodName, void* paramter = nullptr) throw(std::exception);
 
     private:
-        friend class PluginManager;
 
         virtual bool doStart() = 0;
         virtual bool doStop() = 0;

@@ -6,11 +6,16 @@
 int main(int argc, char const* argv[])
 {
     plumage::PluginManager manager;
+    try {
 #ifdef MAC_OSX
-    manager.loadPlugin("./libsample_plugin.dylib", "createSamplePlugin");
+        manager.loadPlugin("./libsample_plugin.dylib", "createSamplePlugin");
 #else
-    manager.loadPlugin("./libsample_plugin.so", "createSamplePlugin");
+        manager.loadPlugin("./libsample_plugin.so", "createSamplePlugin");
 #endif
+    } catch (const std::exception& e) {
+        std::cout << e.what() << std::endl;
+        return 1;
+    }
 
     plumage::PluginRepository* repos = manager.getPluginRepository("SamplePlugin", 1, true);
     if(repos == nullptr) {

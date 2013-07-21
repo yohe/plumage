@@ -60,7 +60,6 @@ namespace plumage {
                                               bool debug = false); 
 
         virtual bool setup(const std::string& configFile); 
-        //virtual bool checkCompatibility(PluginInterface* pif);
 
         void validateRequirement(const PluginRequirement& requirement) throw (std::runtime_error);
 

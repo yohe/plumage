@@ -29,6 +29,6 @@ ELSE()
     set_target_properties(sample_plugin plumage_sample PROPERTIES COMPILE_FLAGS "-Wall -I ../include -std=c++11")
 ENDIF()
 
-set_target_properties(sample_plugin PROPERTIES LINK_FLAGS "-L ../lib -lplumage")
-set_target_properties(plumage_sample PROPERTIES LINK_FLAGS "-L ../lib -lplumage")
+set_target_properties(sample_plugin PROPERTIES LINK_FLAGS "-L ../lib -lplumage -ldl")
+set_target_properties(plumage_sample PROPERTIES LINK_FLAGS "-L ../lib -lplumage -ldl")
 
