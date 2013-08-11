@@ -35,10 +35,6 @@ PluginRepository* PluginManager::getPluginRepository(const std::string& pluginNa
     }
 }
 
-bool PluginManager::setup(const std::string& configFile) {
-    return true;
-}
-
 void PluginManager::loadPlugin(const std::string& pluginPath, const std::string& loadMethod) throw (std::runtime_error) {
 
     std::cout << "Loading.. : " << pluginPath << " --- " << std::flush;

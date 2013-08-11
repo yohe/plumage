@@ -59,8 +59,6 @@ namespace plumage {
                                               int interfaceVersion,
                                               bool debug = false); 
 
-        virtual bool setup(const std::string& configFile); 
-
         void validateRequirement(PluginEntity* pif) throw (std::runtime_error);
         void validateReference(PluginEntity* pif) throw (std::runtime_error);
 
