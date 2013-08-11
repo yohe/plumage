@@ -1,23 +1,35 @@
 
 #include "plumage/plugin_interface.hpp"
+#include "plumage/plugin_entity.hpp"
 
 using namespace plumage;
 
+std::string PluginInterface::getPluginName() const {
+    return entity_->getPluginName();
+}
+int PluginInterface::getPluginVersion() const  {
+    return entity_->getPluginVersion();
+}
+int PluginInterface::getInterfaceVersion() const  {
+    return entity_->getInterfaceVersion();
+}
 bool PluginInterface::start() {
-    bool ret = doStart();
-    return ret;
+    return entity_->start();
 }
-
 bool PluginInterface::stop() {
-    bool ret = doStop();
-    return ret;
+    return entity_->stop();
+}
+bool PluginInterface::isDebug() const  {
+    return entity_->isDebug();
+}
+bool PluginInterface::isCompatible(int pluginVersion) const  {
+    return entity_->isCompatible(pluginVersion);
+}
+bool PluginInterface::isCallable(const std::string& methodName) const  {
+    return entity_->isCallable(methodName);
 }
 
-void* PluginInterface::call(const std::string& methodName, void* paramter)  throw (std::exception) {
-    if(isCallable(methodName) == false) {
-        return nullptr;
-        // throw exception;
-    }
-    return doCall(methodName, paramter);
+void* PluginInterface::call(const std::string& methodName, void* parameter) throw(std::exception)  {
+    return entity_->call(methodName, parameter);
 }
 

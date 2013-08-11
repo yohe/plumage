@@ -3,14 +3,14 @@
 #define SAMPLE_PLUGIN_HPP
 
 #include <iostream>
-#include "plumage/plugin_interface.hpp"
+#include "plumage/plugin_Entity.hpp"
 
-class SamplePlugin : public plumage::PluginInterface {
+class SamplePlugin : public plumage::PluginEntity {
+protected:
 public:
-    SamplePlugin(std::string name) : plumage::PluginInterface(name) {
-        requirement_.addRequirement("HogePlugin", 1);
+    SamplePlugin(std::string name) : plumage::PluginEntity(name) {
+        //requirement_.addRequirement("HogePlugin", 1);
     }
-
     virtual ~SamplePlugin() {
         std::cout << "SamplePlugin destruct." << std::endl;
     }

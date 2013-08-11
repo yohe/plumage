@@ -2,7 +2,7 @@
 #ifndef PLUMAGE_PLUGIN_REQUIREMENT_H
 #define PLUMAGE_PLUGIN_REQUIREMENT_H
 
-#include <list>
+#include <set>
 #include <string>
 #include <stdexcept>
 
@@ -23,6 +23,16 @@ namespace plumage {
             }
             return true;
         }
+        bool operator<(const PluginRequirementInfo& rhs) const {
+            if(pluginName_ < rhs.pluginName_) {
+                return true;
+            }
+            return false;
+        }
+
+        bool operator>(const PluginRequirementInfo& rhs) const {
+            return !(*this < rhs);
+        }
     };
 
     class PluginRequirement {
@@ -31,10 +41,10 @@ namespace plumage {
         ~PluginRequirement();
 
         void addRequirement(const std::string& pluginName, int interfaceVersion) throw (std::logic_error);
-        const std::list<PluginRequirementInfo>& getRequirementList() const;
+        const std::set<PluginRequirementInfo>& getRequirementList() const;
 
     private:
-        std::list<PluginRequirementInfo> requirementList_;
+        std::set<PluginRequirementInfo> requirementList_;
     };
 }
 

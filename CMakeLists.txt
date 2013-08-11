@@ -14,6 +14,7 @@ ENDIF(APPLE)
 add_library(plumage SHARED
     src/plugin_manager.cpp
     src/plugin_repository.cpp
+    src/plugin_entity.cpp
     src/plugin_interface.cpp
     src/plugin_information.cpp
     src/plugin_requirement.cpp
@@ -22,6 +23,7 @@ add_library(plumage SHARED
 add_library(plumage_st STATIC
     src/plugin_manager.cpp
     src/plugin_repository.cpp
+    src/plugin_entity.cpp
     src/plugin_interface.cpp
     src/plugin_information.cpp
     src/plugin_requirement.cpp

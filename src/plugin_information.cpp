@@ -1,7 +1,7 @@
 
 #include <dlfcn.h>
 #include "plumage/plugin_information.hpp"
-#include "plumage/plugin_interface.hpp"
+#include "plumage/plugin_entity.hpp"
 
 using namespace plumage;
 

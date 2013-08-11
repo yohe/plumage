@@ -5,11 +5,14 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <stdexcept>
 
 #include "plumage/plugin_information.hpp"
 
 namespace plumage {
 
+    class PluginManager;
+    class PluginEntity;
     class PluginInterface;
 
     class PluginRepository {
@@ -20,7 +23,8 @@ namespace plumage {
             NO_ACTIVATE = 0 
         };
 
-        PluginRepository(const std::string& repositoryName, int interfaceVersion) : 
+        PluginRepository(PluginManager* manager, const std::string& repositoryName, int interfaceVersion) : 
+            manager_(manager),
             repositoryName_(repositoryName),
             interfaceVersion_(interfaceVersion),
             activatedPluginVersion_(NO_ACTIVATE)
@@ -28,9 +32,9 @@ namespace plumage {
 
         virtual ~PluginRepository();
 
-        PluginInterface* registerPlugin(PluginHolder* plugin, void* pluginHandle);
+        PluginEntity* registerPlugin(PluginHolder* plugin, void* pluginHandle);
 
-        void unregistPlugin(PluginInterface* pif);
+        void unregistPlugin(PluginEntity* pif);
 
         std::string getRepositoryName() const {
             return repositoryName_;
@@ -43,13 +47,15 @@ namespace plumage {
         int getActivatedVersion() const {
             return activatedPluginVersion_;
         }
-        bool activate(int pluginVersion);
-        bool deactivate();
+
+        bool activate(int pluginVersion) throw (std::runtime_error) ;
+        bool deactivate() throw (std::runtime_error) ;
 
         std::map<int, PluginInterface*> getPluginList() const;
 
     protected:
         typedef std::map<int, PluginInformation*> PluginMap;
+        PluginManager* manager_;
         PluginMap pluginMap_;
         std::string repositoryName_;
         int interfaceVersion_;

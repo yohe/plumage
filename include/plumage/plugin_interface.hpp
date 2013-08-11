@@ -5,83 +5,34 @@
 #include <string>
 #include <vector>
 #include <exception>
-
-#include "plumage/plumage_config.hpp"
-#include "plumage/plugin_requirement.hpp"
+#include <map>
 
 namespace plumage {
 
-    class PluginInterface;
-
-    class DeleterBase {
-    public:
-        virtual ~DeleterBase() {}
-        virtual void operator()(void* p) const = 0;
-    };
-
-    template <class T>
-    class PluginDeleter : public DeleterBase {
-    public:
-        virtual void operator()(void* p) const {
-            delete static_cast<T*>(p);
-        }
-    };
-
-    class PluginHolder {
-    public:
-        template<class T>
-        PluginHolder(T* plugin) : plugin_(plugin){
-            deleter_ = new PluginDeleter<T>();
-        }
-
-        ~PluginHolder() {
-            (*deleter_)(plugin_);
-            delete deleter_;
-        }
-
-        PluginInterface* get() const {
-            return plugin_;
-        }
-    private:
-        PluginInterface* plugin_;
-        DeleterBase* deleter_;
-    };
+    class PluginEntity;
 
     class PluginInterface {
+        friend class PluginEntity;
+        ~PluginInterface() {
+        }
     public:
-        PluginInterface(std::string name) : pluginName_(name){
+        PluginInterface(PluginEntity* entity) : entity_(entity) {
         }
 
-        virtual ~PluginInterface() {
-        }
-
-        const char* getPlumageVersion() const {
-            return PLUMAGE_VERSION;
-        }
-        virtual int getInterfaceVersion() const = 0;
-        const PluginRequirement& getRequirement() {
-            return requirement_;
-        }
-
-        std::string getPluginName() const { return pluginName_; }
-        virtual int getPluginVersion() const = 0;
-        virtual bool isDebug() const = 0;
-        virtual bool isCompatible(int pluginVersion) const = 0;
-        virtual bool isCallable(const std::string& methodName) const = 0;
+        std::string getPluginName() const;
+        int getPluginVersion() const ;
+        int getInterfaceVersion() const ;
 
         bool start();
         bool stop();
-        void* call(const std::string& methodName, void* paramter = nullptr) throw(std::exception);
+        bool isDebug() const ;
+        bool isCompatible(int pluginVersion) const ;
+        bool isCallable(const std::string& methodName) const ;
+
+        void* call(const std::string& methodName, void* parameter = nullptr) throw(std::exception) ;
 
     private:
-
-        virtual bool doStart() = 0;
-        virtual bool doStop() = 0;
-        virtual void* doCall(std::string methodName, void* paramter) = 0;
-
-    protected:
-        std::string pluginName_;
-        PluginRequirement requirement_;
+        PluginEntity* entity_;
     };
 
 }

@@ -9,7 +9,7 @@
 namespace plumage {
 
     class PluginRepository;
-    class PluginInterface;
+    class PluginEntity;
     class PluginHolder;
     class PluginRequirement;
 
@@ -61,7 +61,8 @@ namespace plumage {
 
         virtual bool setup(const std::string& configFile); 
 
-        void validateRequirement(const PluginRequirement& requirement) throw (std::runtime_error);
+        void validateRequirement(PluginEntity* pif) throw (std::runtime_error);
+        void validateReference(PluginEntity* pif) throw (std::runtime_error);
 
     private:
         typedef std::map<RepositoryKey, PluginRepository*> PluginRepositoryMap;

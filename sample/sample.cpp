@@ -21,7 +21,12 @@ int main(int argc, char const* argv[])
     if(repos == nullptr) {
         return 0;
     }
-    repos->activate(1);
+    try {
+        repos->activate(1);
+    } catch (const std::exception& e) {
+        std::cout << e.what() << std::endl;
+        return 1;
+    }
     plumage::PluginInterface* pif = repos->getActivatedPlugin();
     if(pif == nullptr) {
         std::cout << "A-----------------------" << std::endl;
