@@ -3,10 +3,10 @@
 ## Description of Software
 This software called "plumage" is the framework of plugin management.
 Plumage is providing following features:
-   * Dynamic load or unload of the shared libraries.
+   * Dynamic load of the shared libraries.
    * Completely separation of the user-interface and plugin implementation.
-   * Collaboration between the plugin.
-   * Requirements management of plugins.
+   * Requirements management of plugins for the collaboration between the plugin.
+   * Check the reference when unload the plugin.
 
 ## LICENSE
 MIT License.
