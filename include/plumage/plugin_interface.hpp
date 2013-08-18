@@ -7,6 +7,8 @@
 #include <exception>
 #include <map>
 
+#include <boost/any.hpp>
+
 namespace plumage {
 
     class PluginEntity;
@@ -29,9 +31,10 @@ namespace plumage {
         bool isCompatible(int pluginVersion) const ;
         bool isCallable(const std::string& methodName) const ;
 
-        void* call(const std::string& methodName, void* parameter = nullptr) throw(std::exception) ;
+        void* call(const std::string& methodName, boost::any& parameter = nullObj) throw(std::exception) ;
 
     private:
+        static boost::any nullObj;
         PluginEntity* entity_;
     };
 

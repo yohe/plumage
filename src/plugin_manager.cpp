@@ -80,7 +80,14 @@ void PluginManager::validateRequirement(PluginEntity* entity) throw (std::runtim
     const PluginRequirement& requirement = entity->getRequirement();
     //std::map<std::string, PluginEntity*>& pluginMap = entity->getRequiredPlugins();
 
+#ifdef CXX03
+    std::set<PluginRequirementInfo>::iterator ite = requirement.getRequirementList().begin();
+    std::set<PluginRequirementInfo>::iterator end = requirement.getRequirementList().end();
+    for(; ite != end; ++ite) {
+        const PluginRequirementInfo& req = *ite;
+#else
     for(const PluginRequirementInfo& req: requirement.getRequirementList()) {
+#endif
         PluginRepository* repos = getPluginRepository(req.pluginName_, req.version_);
         if(repos == nullptr) {
             std::stringstream ss;

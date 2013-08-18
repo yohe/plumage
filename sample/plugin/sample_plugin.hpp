@@ -43,7 +43,7 @@ protected:
         return true;
     }
 
-    virtual void* doCall(std::string methodName, void* paramter) {
+    virtual void* doCall(std::string methodName, boost::any* paramter) {
         std::cout << methodName << " called." << std::endl;
         return nullptr;
     }

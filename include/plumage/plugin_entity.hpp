@@ -7,6 +7,8 @@
 #include <exception>
 #include <map>
 
+#include <boost/any.hpp>
+
 #include "plumage/plumage_config.hpp"
 #include "plumage/plugin_requirement.hpp"
 #include "plumage/plugin_interface.hpp"
@@ -82,13 +84,14 @@ namespace plumage {
 
         bool start();
         bool stop();
-        void* call(const std::string& methodName, void* paramter = nullptr) throw(std::exception);
+        void* call(const std::string& methodName) throw(std::exception);
+        void* call(const std::string& methodName, boost::any& paramter) throw(std::exception);
 
     private:
 
         virtual bool doStart() = 0;
         virtual bool doStop() = 0;
-        virtual void* doCall(std::string methodName, void* paramter) = 0;
+        virtual void* doCall(std::string methodName, boost::any& paramter) throw (std::exception) = 0;
 
     protected:
         std::string pluginName_;

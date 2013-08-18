@@ -19,7 +19,11 @@ namespace plumage {
     protected:
     public:
 
+#ifdef CXX03
+        enum DefinedValue {
+#else
         enum DefinedValue : int {
+#endif
             NO_ACTIVATE = 0 
         };
 

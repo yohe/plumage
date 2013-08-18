@@ -29,7 +29,7 @@ bool PluginInterface::isCallable(const std::string& methodName) const  {
     return entity_->isCallable(methodName);
 }
 
-void* PluginInterface::call(const std::string& methodName, void* parameter) throw(std::exception)  {
+void* PluginInterface::call(const std::string& methodName, boost::any& parameter) throw(std::exception)  {
     return entity_->call(methodName, parameter);
 }
 
