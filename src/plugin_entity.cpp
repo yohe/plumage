@@ -20,20 +20,11 @@ bool PluginEntity::stop() {
     return ret;
 }
 
-void* PluginEntity::call(const std::string& methodName)  throw (std::exception) {
+void* PluginEntity::call(const std::string& methodName, boost::any& paramter)  throw (std::exception) {
     if(isCallable(methodName) == false) {
         std::string mes = methodName;
         mes += " is not support.";
         throw std::logic_error(mes.c_str());
-    }
-    boost::any nullObj;
-    return doCall(methodName, nullObj);
-}
-
-void* PluginEntity::call(const std::string& methodName, boost::any& paramter)  throw (std::exception) {
-    if(isCallable(methodName) == false) {
-        return nullptr;
-        // throw exception;
     }
     return doCall(methodName, paramter);
 }

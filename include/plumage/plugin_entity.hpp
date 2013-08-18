@@ -84,7 +84,6 @@ namespace plumage {
 
         bool start();
         bool stop();
-        void* call(const std::string& methodName) throw(std::exception);
         void* call(const std::string& methodName, boost::any& paramter) throw(std::exception);
 
     private:

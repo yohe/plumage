@@ -4,8 +4,6 @@
 
 using namespace plumage;
 
-boost::any PluginInterface::nullObj;
-
 std::string PluginInterface::getPluginName() const {
     return entity_->getPluginName();
 }
@@ -31,6 +29,10 @@ bool PluginInterface::isCallable(const std::string& methodName) const  {
     return entity_->isCallable(methodName);
 }
 
+void* PluginInterface::call(const std::string& methodName) throw(std::exception)  {
+    boost::any parameter;
+    return entity_->call(methodName, parameter);
+}
 void* PluginInterface::call(const std::string& methodName, boost::any& parameter) throw(std::exception)  {
     return entity_->call(methodName, parameter);
 }

@@ -31,10 +31,10 @@ namespace plumage {
         bool isCompatible(int pluginVersion) const ;
         bool isCallable(const std::string& methodName) const ;
 
-        void* call(const std::string& methodName, boost::any& parameter = nullObj) throw(std::exception) ;
+        void* call(const std::string& methodName) throw(std::exception) ;
+        void* call(const std::string& methodName, boost::any& parameter) throw(std::exception) ;
 
     private:
-        static boost::any nullObj;
         PluginEntity* entity_;
     };
 
