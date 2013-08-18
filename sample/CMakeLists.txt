@@ -21,14 +21,8 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g")
 
 ADD_EXECUTABLE(plumage_sample sample.cpp)
 
-IF(CPPMODE STREQUAL CXX03)
-    add_definitions(-Dnullptr=NULL)
-    add_definitions(-DCXX03)
-    set_target_properties(sample_plugin plumage_sample PROPERTIES COMPILE_FLAGS "-Wall -I ../include")
-ELSE()
-    set_target_properties(sample_plugin plumage_sample PROPERTIES COMPILE_FLAGS "-Wall -I ../include -std=c++11")
-ENDIF()
+set_target_properties(sample_plugin plumage_sample PROPERTIES COMPILE_FLAGS "-Wall -I ../include -std=c++11 -stdlib=libc++")
 
-set_target_properties(sample_plugin PROPERTIES LINK_FLAGS "-L ../lib -lplumage -ldl")
-set_target_properties(plumage_sample PROPERTIES LINK_FLAGS "-L ../lib -lplumage -ldl")
+set_target_properties(sample_plugin PROPERTIES LINK_FLAGS "-L ../lib -lplumage -ldl -lc++")
+set_target_properties(plumage_sample PROPERTIES LINK_FLAGS "-L ../lib -lplumage -ldl -lc++")
 

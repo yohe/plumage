@@ -4,6 +4,8 @@
 
 using namespace plumage;
 
+boost::any PluginInterface::nullObj;
+
 std::string PluginInterface::getPluginName() const {
     return entity_->getPluginName();
 }
