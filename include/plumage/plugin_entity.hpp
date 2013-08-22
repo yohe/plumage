@@ -84,13 +84,12 @@ namespace plumage {
 
         bool start();
         bool stop();
-        void* call(const std::string& methodName, boost::any& paramter) throw(std::exception);
+        boost::any call(const std::string& methodName, boost::any& paramter) throw(std::exception);
 
     private:
-
         virtual bool doStart() = 0;
         virtual bool doStop() = 0;
-        virtual void* doCall(std::string methodName, boost::any& paramter) throw (std::exception) = 0;
+        virtual boost::any doCall(std::string methodName, boost::any& paramter) throw (std::exception) = 0;
 
     protected:
         std::string pluginName_;

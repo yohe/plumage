@@ -1,4 +1,6 @@
 
+#include <utility>
+
 #include "plumage/plugin_entity.hpp"
 #include "plumage/plugin_interface.hpp"
 
@@ -20,12 +22,12 @@ bool PluginEntity::stop() {
     return ret;
 }
 
-void* PluginEntity::call(const std::string& methodName, boost::any& paramter)  throw (std::exception) {
+boost::any PluginEntity::call(const std::string& methodName, boost::any& paramter)  throw (std::exception) {
     if(isCallable(methodName) == false) {
         std::string mes = methodName;
         mes += " is not support.";
         throw std::logic_error(mes.c_str());
     }
-    return doCall(methodName, paramter);
+    return std::move(doCall(methodName, paramter));
 }
 

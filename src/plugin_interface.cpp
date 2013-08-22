@@ -1,4 +1,6 @@
 
+#include <utility>
+
 #include "plumage/plugin_interface.hpp"
 #include "plumage/plugin_entity.hpp"
 
@@ -29,11 +31,11 @@ bool PluginInterface::isCallable(const std::string& methodName) const  {
     return entity_->isCallable(methodName);
 }
 
-void* PluginInterface::call(const std::string& methodName) throw(std::exception)  {
+boost::any PluginInterface::call(const std::string& methodName) throw(std::exception)  {
     boost::any parameter;
-    return entity_->call(methodName, parameter);
+    return std::move(entity_->call(methodName, parameter));
 }
-void* PluginInterface::call(const std::string& methodName, boost::any& parameter) throw(std::exception)  {
-    return entity_->call(methodName, parameter);
+boost::any PluginInterface::call(const std::string& methodName, boost::any& parameter) throw(std::exception)  {
+    return std::move(entity_->call(methodName, parameter));
 }
 

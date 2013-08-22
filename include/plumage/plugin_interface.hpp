@@ -31,8 +31,8 @@ namespace plumage {
         bool isCompatible(int pluginVersion) const ;
         bool isCallable(const std::string& methodName) const ;
 
-        void* call(const std::string& methodName) throw(std::exception) ;
-        void* call(const std::string& methodName, boost::any& parameter) throw(std::exception) ;
+        boost::any call(const std::string& methodName) throw(std::exception) ;
+        boost::any call(const std::string& methodName, boost::any& parameter) throw(std::exception) ;
 
     private:
         PluginEntity* entity_;
