@@ -96,7 +96,10 @@ namespace plumage {
         PluginRequirement requirement_;
         
     private:
+        // Reference to
         std::map<std::string, PluginInterface*> requiredPlugins_;
+        // Reference from
+        std::map<std::string, PluginInterface*> referringPlugins_;
         PluginInterface interface_;
     };
 

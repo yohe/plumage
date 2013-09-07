@@ -16,7 +16,6 @@ PluginEntity* PluginRepository::registerPlugin(PluginHolder* holder, void* plugi
     PluginEntity* pif = holder->get();;
     PluginInformation* pinfo = new PluginInformation(holder, PluginStatus::REGISTED, pluginHandle);
     pluginMap_[pif->getPluginVersion()] = pinfo;
-    std::cout << "registered plugin." << std::endl;
     return pif;
 }
 void PluginRepository::unregistPlugin(PluginEntity* entity) {
@@ -27,7 +26,6 @@ void PluginRepository::unregistPlugin(PluginEntity* entity) {
             if(ite->second->getStatus() == PluginStatus::REGISTED) {
                 delete ite->second;
                 pluginMap_.erase(ite->first);
-                std::cout << "deleted plugin." << std::endl;
                 break;
             } else {
             }

@@ -10,6 +10,7 @@ namespace plumage {
 
     class PluginRepository;
     class PluginEntity;
+    class PluginInterface;
     class PluginHolder;
     class PluginRequirement;
 
@@ -73,3 +74,4 @@ namespace plumage {
 }
 
 #endif /* end of include guard */
+
