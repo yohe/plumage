@@ -2,14 +2,15 @@ cmake_minimum_required(VERSION 2.6)
 
 PROJECT(plumage)
 
-IF(UNIX)
+message(${CMAKE_SYSTEM})
+IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     include_directories(/usr/include ./)
     link_directories(/usr/lib)
-ENDIF(UNIX)
-IF(APPLE)
+ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     include_directories(/opt/local/include /usr/include ./)
     link_directories(/opt/local/lib /usr/lib)
-ENDIF(APPLE)
+ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
 add_library(plumage SHARED
     src/plugin_manager.cpp
