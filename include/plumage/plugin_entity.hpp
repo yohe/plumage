@@ -78,6 +78,7 @@ namespace plumage {
         }
         PluginInterface* getRequiredPlugin(const std::string& pluginName) const;
 
+        bool isStarted() const;
         virtual bool isDebug() const = 0;
         virtual bool isCompatible(int pluginVersion) const = 0;
         virtual bool isCallable(const std::string& methodName) const = 0;
@@ -91,6 +92,7 @@ namespace plumage {
         virtual bool doStop() = 0;
         virtual boost::any doCall(std::string methodName, boost::any& paramter) throw (std::exception) = 0;
 
+        bool started_;
     protected:
         std::string pluginName_;
         PluginRequirement requirement_;

@@ -8,6 +8,9 @@ Plumage is providing following features:
    * Requirements management of plugins for the collaboration between the plugin.
    * Check the reference when unload the plugin.
 
+## About the binary compatibility
+There is not the binary compatibility now.
+
 ## LICENSE
 MIT License.
 

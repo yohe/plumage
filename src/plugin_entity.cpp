@@ -6,20 +6,31 @@
 
 using namespace plumage;
 
-PluginEntity::PluginEntity(std::string name) : pluginName_(name), interface_(this) {
+PluginEntity::PluginEntity(std::string name) : started_(false), pluginName_(name), interface_(this) {
 }
 
 PluginEntity::~PluginEntity() {
 }
 
+bool PluginEntity::isStarted() const {
+    return started_;
+}
 bool PluginEntity::start() {
-    bool ret = doStart();
-    return ret;
+    if(!isStarted()) {
+        bool ret = doStart();
+        started_ = ret;
+        return ret;
+    }
+    return true;
 }
 
 bool PluginEntity::stop() {
-    bool ret = doStop();
-    return ret;
+    if(isStarted()) {
+        bool ret = doStop();
+        started_ = !ret;
+        return ret;
+    }
+    return false;
 }
 
 boost::any PluginEntity::call(const std::string& methodName, boost::any& paramter)  throw (std::exception) {
@@ -31,3 +42,9 @@ boost::any PluginEntity::call(const std::string& methodName, boost::any& paramte
     return std::move(doCall(methodName, paramter));
 }
 
+PluginInterface* PluginEntity::getRequiredPlugin(const std::string& pluginName) const {
+    if(requiredPlugins_.count(pluginName) == 0) {
+        return nullptr;
+    }
+    return requiredPlugins_.at(pluginName);
+}
