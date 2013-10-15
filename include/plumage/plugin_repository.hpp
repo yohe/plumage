@@ -21,7 +21,8 @@ namespace plumage {
     public:
 
         enum DefinedValue : int {
-            NO_ACTIVATE = 0 
+            NO_ACTIVATE = 0,
+            LATEST_VERSION = -1 
         };
 
         PluginRepository(PluginManager* manager, const std::string& repositoryName, int interfaceVersion) : 
@@ -40,6 +41,7 @@ namespace plumage {
         std::string getRepositoryName() const {
             return repositoryName_;
         }
+        int getLatestVersion() const;
 
         PluginInterface* getActivatedPlugin() const;
         PluginInterface* getPlugin(int pluginVersion) const;
@@ -49,7 +51,7 @@ namespace plumage {
             return activatedPluginVersion_;
         }
 
-        bool activate(int pluginVersion) throw (std::runtime_error) ;
+        bool activate(int pluginVersion = DefinedValue::LATEST_VERSION) throw (std::runtime_error) ;
         bool deactivate() throw (std::runtime_error) ;
 
         std::map<int, PluginInterface*> getPluginList() const;

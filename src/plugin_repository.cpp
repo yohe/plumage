@@ -66,6 +66,9 @@ bool PluginRepository::activate(int pluginVersion) throw (std::runtime_error) {
     if(activatedPluginVersion_ != 0) {
         return false;
     }
+    if(pluginVersion == DefinedValue::LATEST_VERSION) {
+        pluginVersion = getLatestVersion();
+    }
     PluginMap::const_iterator ite = pluginMap_.find(pluginVersion);
     if(ite == pluginMap_.end()) {
         return false;
@@ -100,4 +103,12 @@ bool PluginRepository::deactivate() throw (std::runtime_error) {
     }
 
     return true;
+}
+
+int PluginRepository::getLatestVersion() const {
+    int ret;
+    for( auto pair : pluginMap_) {
+        ret = std::max(ret, pair.first);
+    }
+    return ret;
 }
